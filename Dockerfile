@@ -2,14 +2,12 @@
 # 
 # Run xfce desktop in docker. 
 # Use x11docker to run image. 
-# Get x11docker script from github: 
+# Get x11docker and x11docker-gui from github: 
 #   https://github.com/mviereck/x11docker 
-# Raw x11docker script:
-#   https://raw.githubusercontent.com/mviereck/x11docker/e49e109f9e78410d242a0226e58127ec9f9d6181/x11docker
 #
-# Example: x11docker --desktop x11docker/xfce
-#          x11docker --xephyr --desktop --hostuser --home --clipboard x11docker/xfce
-#          x11docker -xdumc x11docker/xfce 
+# Examples: x11docker --desktop x11docker/xfce
+#           x11docker --xephyr --desktop --hostuser --home --clipboard x11docker/xfce
+#           x11docker -xdumc x11docker/xfce 
  
 FROM phusion/baseimage:latest
 
