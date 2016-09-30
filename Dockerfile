@@ -2,12 +2,12 @@
 # 
 # Run xfce desktop in docker. 
 # Use x11docker to run image. 
-# Get x11docker and x11docker-gui from github: 
+# Get x11docker script and x11docker-gui from github: 
 #   https://github.com/mviereck/x11docker 
 #
-# Examples: x11docker --desktop x11docker/xfce
-#           x11docker --xephyr --desktop --hostuser --home --clipboard x11docker/xfce
-#           x11docker -xdumc x11docker/xfce 
+# Example: x11docker --desktop x11docker/xfce
+#          x11docker --xephyr --desktop --hostuser --home --clipboard x11docker/xfce
+#          x11docker -xdumc x11docker/xfce 
  
 FROM phusion/baseimage:latest
 
@@ -31,10 +31,6 @@ RUN apt-get install -y xfce4-terminal mousepad
 # some useful x apps. 
 RUN apt-get install -y x11-utils
 
-## Further:
-## disabled, but maybe usefull additional installations
-
-# enable to get xrandr and some other goodies
 # needed in xfce to be able to logout for wtf reasons
 RUN apt-get install -y x11-xserver-utils
 
@@ -42,11 +38,11 @@ RUN apt-get install -y x11-xserver-utils
 #RUN apt-get install -y mesa-utils mesa-utils-extra
 
 # some utils to have proper menus, mime file types etc.
-#RUN apt-get install -y --no-install-recommends xdg-utils
-#RUN apt-get install -y menu
-#RUN apt-get install -y menu-xdg
-#RUN apt-get install -y mime-support
-#RUN apt-get install -y desktop-file-utils
+RUN apt-get install -y --no-install-recommends xdg-utils
+RUN apt-get install -y menu
+RUN apt-get install -y menu-xdg
+RUN apt-get install -y mime-support
+RUN apt-get install -y desktop-file-utils
 
 # clean cache to make image a bit smaller
 RUN apt-get clean
