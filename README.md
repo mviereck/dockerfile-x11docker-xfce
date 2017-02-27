@@ -17,3 +17,4 @@ Dockerfile containing XFCE desktop
  # Screenshot
  XFCE desktop in a Xephyr window running with x11docker
  ![screenshot](https://raw.githubusercontent.com/mviereck/x11docker/screenshots/screenshot-xfce.png "XFCE desktop running in Xephyr window using x11docker")
+ 
