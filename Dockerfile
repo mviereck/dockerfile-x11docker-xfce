@@ -1,109 +1,35 @@
-# x11docker/xfce
+# x11docker/debian-xfce
 # 
-# Run xfce desktop in docker. 
+# Run XFCE desktop in docker. 
 # Use x11docker to run image. 
-# Get x11docker script and x11docker-gui from github: 
+# Get x11docker from github: 
 #   https://github.com/mviereck/x11docker 
 #
-# Examples: x11docker --desktop x11docker/xfce
-#           x11docker --xephyr --desktop --hostuser --home --clipboard x11docker/xfce
- 
-FROM ubuntu:xenial
+# Examples: x11docker --wm=none x11docker/xfce
+#           x11docker x11docker/xfce thunar 
 
-RUN apt-get update
+FROM debian:stretch
 
-# Set environment variables 
-ENV DEBIAN_FRONTEND noninteractive 
-ENV LC_ALL en_US.UTF-8 
-ENV LANG en_US.UTF-8 
-ENV LANGUAGE en_US.UTF-8 
-RUN locale-gen en_US.UTF-8
-
-# fix problems with dictionaries-common 
-# See https://bugs.launchpad.net/ubuntu/+source/dictionaries-common/+bug/873551 
+RUN apt-get  update
 RUN apt-get install -y apt-utils
-RUN /usr/share/debconf/fix_db.pl
-RUN apt-get install -y -f
+RUN apt-get install -y dbus-x11 x11-utils x11-xserver-utils
 
-# Folder must be created by root
-RUN mkdir /tmp/.ICE-unix && chmod 1777 /tmp/.ICE-unix
+RUN apt-get install -y --no-install-recommends xfce4 
+RUN apt-get install -y xfce4-terminal mousepad xfce4-notifyd 
+
+#RUN apt-get install -y xfce4-goodies
 
 # some utils to have proper menus, mime file types etc.
-RUN apt-get install -y --no-install-recommends xdg-utils
-RUN apt-get install -y menu
-RUN apt-get install -y menu-xdg
-RUN apt-get install -y mime-support
-RUN apt-get install -y desktop-file-utils
+RUN apt-get install -y --no-install-recommends xdg-utils xdg-user-dirs
+RUN apt-get install -y menu menu-xdg mime-support desktop-file-utils desktop-base
 
-# xterm as an everywhere working terminal
-RUN apt-get install -y --no-install-recommends xterm
-
-# pstree, killall etc.
-RUN apt-get install -y psmisc
-
-
-
-# install core xfce
-RUN apt-get install -y --no-install-recommends xfce4
-RUN apt-get install -y xfce4-terminal mousepad gtk3-engines-xfce
-
-# needed in xfce to be able to logout for wtf reasons
-RUN apt-get install -y x11-xserver-utils
-
-
-
-
-## Further:
-## Usefull additional installations, enable them if you like to
-
-# Some xfce panel goodies
-RUN apt-get install -y xfce4-whiskermenu-plugin xfce4-clipman-plugin xfce4-linelight-plugin xfce4-screenshooter-plugin xfce4-notes-plugin
-
-#sudo
-RUN apt-get install -y sudo
-
-## some X libs for clients, f.e. allowing videos in Xephyr
-#RUN apt-get install -y --no-install-recommends x11-utils
-
-## OpenGl support in dependencies
-#RUN apt-get install -y mesa-utils mesa-utils-extra
-
-## Pulseaudio support
-#RUN apt-get install -y --no-install-recommends pulseaudio
-
-
-
-# clean cache to make image a bit smaller
-RUN apt-get clean
-
-# Set some xfce config to have visible icons
-RUN mkdir -p /etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml
-RUN echo '<?xml version="1.0" encoding="UTF-8"?>                     \
-<channel name="xsettings" version="1.0">                             \
-  <property name="Net" type="empty">                                 \
-    <property name="ThemeName" type="string" value="Raleigh"/>       \
-    <property name="IconThemeName" type="string" value="Humanity"/>  \
-  </property>                                                        \
-</channel>                                                           \
-' > /etc/skel/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml
-
-RUN cp -R /etc/skel/. /root/
+# OpenGL support
+RUN apt-get install -y libxv1 mesa-utils mesa-utils-extra libgl1-mesa-glx libglew2.0 \
+                       libglu1-mesa libgl1-mesa-dri libdrm2 libgles2-mesa libegl1-mesa
 
 # create startscript 
 RUN echo '#! /bin/bash\n\
-if [ ! -e "$HOME/.config" ] ; then\n\
-  cp -R /etc/skel/. $HOME/ \n\
-  cp -R /etc/skel/* $HOME/ \n\
-fi\n\
-case $DISPLAY in\n\
-  "")  echo "Need X server to start Xfce desktop.\n\
-  To run GUI applications in docker, you can use x11docker.\n\
-  Get x11docker from github: https://github.com/mviereck/x11docker\n\
-  Run image with command:\n\
-    x11docker --desktop x11docker/xfce"\n\
-  exit 1 ;;\n\
-esac\n\
-xfce4-session\n\
+startxfce4\n\
 ' > /usr/local/bin/start 
 RUN chmod +x /usr/local/bin/start 
 
