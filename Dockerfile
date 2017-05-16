@@ -13,11 +13,13 @@ FROM debian:stretch
 RUN apt-get  update
 RUN apt-get install -y apt-utils
 RUN apt-get install -y dbus-x11 x11-utils x11-xserver-utils
+RUN apt-get install -y procps psmisc
 
 RUN apt-get install -y --no-install-recommends xfce4 
 RUN apt-get install -y xfce4-terminal mousepad xfce4-notifyd 
 
 #RUN apt-get install -y xfce4-goodies
+
 
 # some utils to have proper menus, mime file types etc.
 RUN apt-get install -y --no-install-recommends xdg-utils xdg-user-dirs
