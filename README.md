@@ -10,6 +10,7 @@ Base image XFCE desktop (on debian stretch)
  - Full desktop: `x11docker --desktop x11docker/xfce` 
  
  # Screenshot
- XFCE desktop in a Xephyr window running with x11docker
+ XFCE desktop in a Xephyr window running with x11docker:
+ 
  ![screenshot](https://raw.githubusercontent.com/mviereck/x11docker/screenshots/screenshot-xfce.png "XFCE desktop running in Xephyr window using x11docker")
  
