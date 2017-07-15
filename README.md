@@ -1,16 +1,13 @@
 # x11docker/xfce
 
-Dockerfile containing XFCE desktop
- - Run XFCE desktop in docker. 
- - Use x11docker to run image to be able to run GUI applications and desktops from within docker images.
- - Get [x11docker and x11docker-gui from github](https://github.com/mviereck/x11docker)
+Base image XFCE desktop (on debian stretch)
+ - Run XFCE desktop in docker.
+ - Use x11docker to run image to run GUI applications and desktop environments in docker images.
+ - Get [x11docker from github](https://github.com/mviereck/x11docker)
 
 # Example commands: 
- - `x11docker x11docker/xfce thunar`
- - `x11docker --xephyr  x11docker/xfce` 
- 
- To create a container user similar to your host user and a persistent home folder preserving your settings:
- - `x11docker --xephyr --desktop --hostuser --home x11docker/xfce start`
+ - Single application: `x11docker x11docker/xfce thunar`
+ - Full desktop: `x11docker --desktop x11docker/xfce` 
  
  # Screenshot
  XFCE desktop in a Xephyr window running with x11docker
