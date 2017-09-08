@@ -35,6 +35,9 @@ RUN apt-get install -y xfce4-terminal mousepad xfce4-notifyd
 
 #RUN apt-get install -y xfce4-goodies
 
+# includes GTK3 broadway support for HTML5 web applications
+RUN apt-get install -y --no-install-recommends libgtk-3-bin
+
 # create startscript 
 RUN echo '#! /bin/bash\n\
 startxfce4\n\
