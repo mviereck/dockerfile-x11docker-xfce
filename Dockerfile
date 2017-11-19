@@ -9,8 +9,9 @@
 #           x11docker x11docker/xfce thunar 
 
 FROM debian:stretch
+ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get   update
+RUN apt-get update
 RUN apt-get install -y apt-utils
 RUN apt-get install -y dbus-x11 x11-utils x11-xserver-utils
 RUN apt-get install -y procps psmisc
@@ -33,10 +34,20 @@ RUN apt-get install -y menu menu-xdg mime-support desktop-file-utils desktop-bas
 RUN apt-get install -y --no-install-recommends xfce4 
 RUN apt-get install -y xfce4-terminal mousepad xfce4-notifyd 
 
-#RUN apt-get install -y xfce4-goodies
-
 # includes GTK3 broadway support for HTML5 web applications
 RUN apt-get install -y --no-install-recommends libgtk-3-bin
+
+# additional Xfce panel plugins
+RUN apt-get install -y --no-install-recommends xfce4-battery-plugin \
+    xfce4-clipman-plugin xfce4-cpugraph-plugin xfce4-datetime-plugin \
+    xfce4-netload-plugin xfce4-notes-plugin xfce4-places-plugin \
+    xfce4-sensors-plugin xfce4-systemload-plugin \
+    xfce4-whiskermenu-plugin xfce4-indicator-plugin \
+    xfce4-cpufreq-plugin xfce4-diskperf-plugin xfce4-fsguard-plugin \
+    xfce4-genmon-plugin xfce4-smartbookmark-plugin xfce4-timer-plugin \
+    xfce4-verve-plugin xfce4-weather-plugin
+# additional Xfce goodies
+RUN apt-get install -y xfce4-taskmanager gtk3-engines-xfce
 
 # create startscript 
 RUN echo '#! /bin/bash\n\
