@@ -53,6 +53,7 @@ RUN rm -rf /var/lib/apt/lists/*
 
 # create startscript 
 RUN echo '#! /bin/bash\n\
+[ -e "$HOME/.config" ] || cp -R /etc/skel/. $HOME/ \n\
 exec startxfce4\n\
 ' > /usr/local/bin/start 
 RUN chmod +x /usr/local/bin/start 
