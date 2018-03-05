@@ -5,25 +5,37 @@
 # Get x11docker from github: 
 #   https://github.com/mviereck/x11docker 
 #
-# Examples: x11docker --desktop x11docker/xfce
-#           x11docker x11docker/xfce thunar 
+# Examples: 
+#   - Run desktop:
+#       x11docker --desktop x11docker/xfce
+#   - Run single application:
+#       x11docker x11docker/xfce thunar
+#
+# Options:
+# Persistent home folder stored on host with   --home
+# Shared host folder with                      --sharedir DIR
+# Hardware acceleration with option            --gpu
+# Clipboard sharing with option                --clipboard
+# Sound support with option                    --alsa
+# With pulseaudio in image, sound support with --pulseaudio
+#
+# Look at x11docker --help for further options.
 
 FROM debian:stretch
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update
-RUN apt-get install -y apt-utils
-RUN apt-get install -y dbus-x11 x11-utils x11-xserver-utils
-RUN apt-get install -y procps psmisc
+RUN apt-get  update
+RUN apt-get install -y dbus-x11 procps psmisc x11-utils x11-xserver-utils
 
 # OpenGL support
 RUN apt-get install -y mesa-utils mesa-utils-extra libxv1
 
 # Language/locale settings
-ENV LANG=en_US.UTF-8
-RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
-RUN echo "LANG=en_US.UTF-8" > /etc/default/locale
-RUN apt-get install -y locales
+# replace en_US by your desired locale setting, 
+# for example de_DE for german.
+ENV LANG en_US.UTF-8
+RUN echo $LANG UTF-8 > /etc/locale.gen
+RUN apt-get install -y locales && update-locale --reset LANG=$LANG
 
 # some utils to have proper menus, mime file types etc.
 RUN apt-get install -y --no-install-recommends xdg-utils xdg-user-dirs
@@ -31,7 +43,10 @@ RUN apt-get install -y menu menu-xdg mime-support desktop-file-utils desktop-bas
 
 # Xfce
 RUN apt-get install -y --no-install-recommends xfce4 
-RUN apt-get install -y xfce4-terminal mousepad xfce4-notifyd 
+RUN apt-get install -y gtk3-engines-xfce xfce4-notifyd 
+
+# additional Xfce goodies
+RUN apt-get install -y mousepad xfce4-taskmanager xfce4-terminal
 
 # includes GTK3 broadway support for HTML5 web applications
 RUN apt-get install -y --no-install-recommends libgtk-3-bin
@@ -45,17 +60,16 @@ RUN apt-get install -y --no-install-recommends xfce4-battery-plugin \
     xfce4-cpufreq-plugin xfce4-diskperf-plugin xfce4-fsguard-plugin \
     xfce4-genmon-plugin xfce4-smartbookmark-plugin xfce4-timer-plugin \
     xfce4-verve-plugin xfce4-weather-plugin
-# additional Xfce goodies
-RUN apt-get install -y xfce4-taskmanager gtk3-engines-xfce
 
-# clean up
-RUN rm -rf /var/lib/apt/lists/*
-
-# create startscript 
-RUN echo '#! /bin/bash\n\
+# startscript to copy dotfiles from /etc/skel
+# runs either CMD or image command from docker run
+RUN echo '#! /bin/sh\n\
 [ -e "$HOME/.config" ] || cp -R /etc/skel/. $HOME/ \n\
-exec startxfce4\n\
+exec $* \n\
 ' > /usr/local/bin/start 
 RUN chmod +x /usr/local/bin/start 
 
-CMD start
+ENTRYPOINT start
+CMD startxfce4
+
+ENV DEBIAN_FRONTEND newt
