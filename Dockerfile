@@ -24,7 +24,8 @@
 FROM debian:stretch
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get  update
+RUN apt-get update && apt-mark hold iptables && \
+    apt-get -y dist-upgrade && apt-get autoremove -y && apt-get clean
 RUN apt-get install -y dbus-x11 procps psmisc x11-utils x11-xserver-utils
 
 # OpenGL support
