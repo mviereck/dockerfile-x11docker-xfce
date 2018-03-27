@@ -65,12 +65,12 @@ RUN apt-get install -y --no-install-recommends xfce4-battery-plugin \
 # startscript to copy dotfiles from /etc/skel
 # runs either CMD or image command from docker run
 RUN echo '#! /bin/sh\n\
-[ -e "$HOME/.config" ] || cp -R /etc/skel/. $HOME/ \n\
-exec $* \n\
+[ -n "$HOME" ] && [ ! -e "$HOME/.config" ] && cp -R /etc/skel/. $HOME/ \n\
+exec $*\n\
 ' > /usr/local/bin/start 
 RUN chmod +x /usr/local/bin/start 
 
-ENTRYPOINT start
-CMD startxfce4
+ENTRYPOINT ["/usr/local/bin/start"]
+CMD ["startxfce4"]
 
 ENV DEBIAN_FRONTEND newt
