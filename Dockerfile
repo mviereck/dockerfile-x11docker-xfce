@@ -29,7 +29,7 @@ RUN apt-get update && apt-mark hold iptables && \
 RUN apt-get install -y dbus-x11 procps psmisc x11-utils x11-xserver-utils
 
 # OpenGL support
-RUN apt-get install -y mesa-utils mesa-utils-extra libxv1
+RUN apt-get install -y mesa-utils mesa-utils-extra libxv1 kmod
 
 # Language/locale settings
 # replace en_US by your desired locale setting, 
