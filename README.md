@@ -17,6 +17,8 @@ Base image XFCE desktop (on debian stretch)
  - Sound support with option                    `--alsa`
  - With pulseaudio in image, sound support with `--pulseaudio`
  - Language locale settings with                `--lang $LANG`
+ - Printing over CUPS with                      `--printer`
+ - Webcam support with                          `--webcam`
 
 Look at `x11docker --help` for further options.
 
@@ -28,7 +30,7 @@ RUN apt-get update
 RUN apt-get install -y midori
 ```
  # Screenshot
- XFCE desktop in a Xephyr window running with x11docker:
+ XFCE desktop in an Xnest window running with x11docker:
  
  ![screenshot](https://raw.githubusercontent.com/mviereck/x11docker/screenshots/screenshot-xfce.png "XFCE desktop running in Xephyr window using x11docker")
  
