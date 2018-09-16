@@ -18,10 +18,13 @@
 # Clipboard sharing with option                --clipboard
 # Sound support with option                    --alsa
 # With pulseaudio in image, sound support with --pulseaudio
+# Language setting with                        `--lang=$LANG`
+# Printing over CUPS with                      `--printer`
+# Webcam support with                          `--webcam`
 #
 # Look at x11docker --help for further options.
 
-FROM debian:stretch
+FROM debian:buster
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-mark hold iptables && \
@@ -54,6 +57,7 @@ RUN apt-get install -y --no-install-recommends xfce4 && \
 
 # OpenGL support
 RUN apt-get install -y mesa-utils mesa-utils-extra libxv1 
+
 
 # startscript to copy dotfiles from /etc/skel
 # runs either CMD or image command from docker run
