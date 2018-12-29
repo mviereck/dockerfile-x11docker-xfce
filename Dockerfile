@@ -27,7 +27,7 @@
 FROM debian:buster
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && apt-mark hold iptables && \
+RUN apt-get  update && apt-mark hold iptables && \
     apt-get install -y dbus-x11 procps psmisc x11-utils x11-xserver-utils kmod xz-utils
 
 # Language/locale settings
@@ -54,10 +54,11 @@ RUN apt-get install -y --no-install-recommends xfce4 && \
       xfce4-genmon-plugin xfce4-smartbookmark-plugin xfce4-timer-plugin \
       xfce4-verve-plugin xfce4-weather-plugin
 
-
 # OpenGL support
 RUN apt-get install -y mesa-utils mesa-utils-extra libxv1 
 
+# set theme to avoid issue with missing spaces in menus.
+RUN sed -i 's%<property name="ThemeName" type="string" value="Xfce"/>%<property name="ThemeName" type="string" value="Raleigh"/>%' /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml
 
 # startscript to copy dotfiles from /etc/skel
 # runs either CMD or image command from docker run
