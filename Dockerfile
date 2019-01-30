@@ -57,7 +57,6 @@ RUN apt-get install -y --no-install-recommends xfce4 && \
 # OpenGL support
 RUN apt-get install -y mesa-utils mesa-utils-extra libxv1 
 
-# set theme to avoid issue with missing spaces in menus.
 RUN sed -i 's%<property name="ThemeName" type="string" value="Xfce"/>%<property name="ThemeName" type="string" value="Raleigh"/>%' /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml
 
 # startscript to copy dotfiles from /etc/skel
@@ -65,10 +64,10 @@ RUN sed -i 's%<property name="ThemeName" type="string" value="Xfce"/>%<property 
 RUN echo '#! /bin/sh\n\
 [ -n "$HOME" ] && [ ! -e "$HOME/.config" ] && cp -R /etc/skel/. $HOME/ \n\
 unset DEBIAN_FRONTEND \n\
-exec $*\n\
-' > /usr/local/bin/start && chmod +x /usr/local/bin/start 
+exec "$@"\n\
+' > /usr/local/bin/start && chmod +x /usr/local/bin/start
 
-ENTRYPOINT ["/usr/local/bin/start"]
+ENTRYPOINT /usr/local/bin/start
 CMD ["startxfce4"]
 
 ENV DEBIAN_FRONTEND newt
