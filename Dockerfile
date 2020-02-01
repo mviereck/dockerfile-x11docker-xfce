@@ -13,14 +13,14 @@
 #
 # Options:
 # Persistent home folder stored on host with   --home
-# Shared host folder with                      --sharedir DIR
+# Shared host folder with                      --share DIR
 # Hardware acceleration with option            --gpu
 # Clipboard sharing with option                --clipboard
-# Sound support with option                    --alsa
-# With pulseaudio in image, sound support with --pulseaudio
-# Language setting with                        `--lang=$LANG`
-# Printing over CUPS with                      `--printer`
-# Webcam support with                          `--webcam`
+# ALSA sound support with option               --alsa
+# Pulseaudio sound support with option         --pulseaudio
+# Language setting with                        --lang [=$LANG]
+# Printing over CUPS with                      --printer
+# Webcam support with                          --webcam
 #
 # Look at x11docker --help for further options.
 
@@ -38,6 +38,7 @@ RUN apt-get update && apt-mark hold iptables && \
     env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
       gtk3-engines-xfce \
       libgtk-3-bin \
+      libpulse0 \
       mousepad \
       xfce4-notifyd \
       xfce4-taskmanager \
