@@ -1,11 +1,11 @@
 # x11docker/xfce
-# 
-# Run XFCE desktop in docker. 
-# Use x11docker to run image. 
-# Get x11docker from github: 
-#   https://github.com/mviereck/x11docker 
 #
-# Examples: 
+# Run XFCE desktop in docker.
+# Use x11docker to run image.
+# Get x11docker from github:
+#   https://github.com/mviereck/x11docker
+#
+# Examples:
 #   - Run desktop:
 #       x11docker --desktop x11docker/xfce
 #   - Run single application:
@@ -24,7 +24,7 @@
 #
 # Look at x11docker --help for further options.
 
-FROM debian:buster
+FROM debian:bullseye
 
 RUN apt-get update && apt-mark hold iptables && \
     env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -36,7 +36,6 @@ RUN apt-get update && apt-mark hold iptables && \
     env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
       xfce4 && \
     env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-      gtk3-engines-xfce \
       libgtk-3-bin \
       libpulse0 \
       mousepad \
@@ -54,7 +53,6 @@ RUN apt-get update && apt-mark hold iptables && \
       xfce4-genmon-plugin \
       xfce4-indicator-plugin \
       xfce4-netload-plugin \
-      xfce4-notes-plugin \
       xfce4-places-plugin \
       xfce4-sensors-plugin \
       xfce4-smartbookmark-plugin \
