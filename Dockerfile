@@ -65,6 +65,7 @@ RUN apt-get update && apt-mark hold iptables && \
       libxv1 \
       mesa-utils \
       mesa-utils-extra && \
-    sed -i 's%<property name="ThemeName" type="string" value="Xfce"/>%<property name="ThemeName" type="string" value="Raleigh"/>%' /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml
+    sed -i 's%<property name="ThemeName" type="string" value="Xfce"/>%<property name="ThemeName" type="string" value="Raleigh"/>%' /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml && \
+    sed -i 's%^\(use_compositing=\).*%\1false%' /usr/share/xfwm4/defaults
 
 CMD ["startxfce4"]
