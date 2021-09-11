@@ -1,11 +1,11 @@
 # x11docker/xfce
+# 
+# Run XFCE desktop in docker. 
+# Use x11docker to run image. 
+# Get x11docker from github: 
+#   https://github.com/mviereck/x11docker 
 #
-# Run XFCE desktop in docker.
-# Use x11docker to run image.
-# Get x11docker from github:
-#   https://github.com/mviereck/x11docker
-#
-# Examples:
+# Examples: 
 #   - Run desktop:
 #       x11docker --desktop x11docker/xfce
 #   - Run single application:
@@ -65,7 +65,23 @@ RUN apt-get update && apt-mark hold iptables && \
       libxv1 \
       mesa-utils \
       mesa-utils-extra && \
-    sed -i 's%<property name="ThemeName" type="string" value="Xfce"/>%<property name="ThemeName" type="string" value="Raleigh"/>%' /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml && \
-    sed -i 's%^\(use_compositing=\).*%\1false%' /usr/share/xfwm4/defaults
+    sed -i 's%<property name="ThemeName" type="string" value="Xfce"/>%<property name="ThemeName" type="string" value="Raleigh"/>%' /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml
 
-CMD ["startxfce4"]
+# disable xfwm4 compositing if X extension COMPOSITE is missing
+RUN echo "#! /bin/bash\n\
+xdpyinfo | grep -q -i COMPOSITE || {\n\
+  mkdir -p /home/lauscher/.config/xfce4/xfconf/xfce-perchannel-xml\n\
+  echo '<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\
+<channel name=\"xfwm4\" version=\"1.0\">\n\
+\n\
+  <property name=\"general\" type=\"empty\">\n\
+    <property name=\"use_compositing\" type=\"bool\" value=\"false\"/>\n\
+  </property>\n\
+</channel>\n\
+' > ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml\n\
+}\n\
+startxfce4\n\
+" > /usr/local/bin/start && \
+chmod +x /usr/local/bin/start
+
+CMD start
