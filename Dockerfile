@@ -70,7 +70,7 @@ RUN apt-get update && apt-mark hold iptables && \
 # disable xfwm4 compositing if X extension COMPOSITE is missing
 RUN echo "#! /bin/bash\n\
 xdpyinfo | grep -q -i COMPOSITE || {\n\
-  mkdir -p /home/lauscher/.config/xfce4/xfconf/xfce-perchannel-xml\n\
+  mkdir -p ~/.config/xfce4/xfconf/xfce-perchannel-xml\n\
   echo '<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\
 <channel name=\"xfwm4\" version=\"1.0\">\n\
 \n\
